@@ -1,24 +1,3 @@
- <p>
- This is a Play application for first 5 chapters of Play For Java.
-+</p>
- 
-+<p>
- How many hours did it take to complete?
- 10 hours - Reading the book, watching the tutorial and class videos and working on the application.
-+</p>
- 
-+<p>
- Which required and optional stories have you completed?
- 
- - Making the product form with some data.
- - Accessing the form with help of the product description.
- -Adding new product, edit the products and submitting form.
- 
-+</p>
- 
--
-+</p>
- GIF walkthrough of all required stories (using LiceCap) Added.
- </p>
+
  
  
