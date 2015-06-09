@@ -29,13 +29,13 @@
     @for(product <- products) {
 
     <tr>
-        <td><a href="@routes.Products.details(product.ean)">
+        <td><a href="@routes.Products.details(product)">
             @product.ean
         </a></td>
-        <td><a href="@routes.Products.details(product.ean)">@product.name</a></td>
-        <td><a href="@routes.Products.details(product.ean)">@product.name</a></td>
+        <td><a href="@routes.Products.details(product)">@product.name</a></td>
+        <td><a href="@routes.Products.details(product)">@product.name</a></td>
         <td>
-            <a href="@routes.Products.details(product.ean)"><i class="icon icon-pencil"></i></a>
+            <a href="@routes.Products.details(product)"><i class="icon icon-pencil"></i></a>
             <a onclick="javascript:del('@routes.Products.delete(product.ean)')"><i class="icon icon-trash"></i></a>
         </td>
     </tr>

@@ -1,14 +1,17 @@
 package controllers;
 
+import com.google.common.io.Files;
 import models.Product;
+import models.Tag;
 import play.data.Form;
-import play.mvc.Result;
-import play.mvc.Controller;
-import play.mvc.With;
+import play.mvc.*;
 import views.html.products.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import static play.mvc.Http.MultipartFormData;
 
 @With(CatchAction.class)
 public class Products extends Controller {
@@ -18,6 +21,7 @@ public class Products extends Controller {
     public static Result index() {
         return redirect(routes.Products.list(1));
     }
+
 
     public static Result list(int page) {
         List<Product> products = Product.findAll();
@@ -29,29 +33,46 @@ public class Products extends Controller {
     }
 
 
-    public static Result details(String ean) {
-        final Product product = Product.findByEan(ean);
-        if (product == null) {
-            return notFound(String.format("Product %s does not exist.", ean));
-        }
-
+    public static Result details(Product product) {
         Form<Product> filledForm = productForm.fill(product);
         return ok(details.render(filledForm));
     }
 
     public static Result save() {
+        MultipartFormData body = request().body().asMultipartFormData();
         Form<Product> boundForm = productForm.bindFromRequest();
         if(boundForm.hasErrors()) {
             flash("error", "Please correct the form below.");
             return badRequest(details.render(boundForm));
         }
-
         Product product = boundForm.get();
+
+        MultipartFormData.FilePart part = body.getFile("picture");
+        if(part != null) {
+            File picture = part.getFile();
+            try {
+                product.picture = Files.toByteArray(picture);
+            } catch (IOException e) {
+                return internalServerError("Error reading file upload");
+            }
+        }
+        List<Tag> tags = new ArrayList<Tag>();
+        for (Tag tag : product.tags) {
+            if (tag.id != null) {
+                tags.add(Tag.findById(tag.id));
+            }
+        }
+        product.tags = tags;
         product.save();
         flash("success",
                 String.format("Successfully added product %s", product));
-
         return redirect(routes.Products.list(1));
+    }
+
+    public static Result picture(String ean) {
+        final Product product = Product.findByEan(ean);
+        if(product == null) return notFound();
+        return ok(product.picture);
     }
 
     public static Result delete(String ean) {
@@ -62,4 +83,7 @@ public class Products extends Controller {
         Product.remove(product);
         return redirect(routes.Products.list(1));
     }
+
+
+
 }
