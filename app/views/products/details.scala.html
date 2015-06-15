@@ -5,8 +5,10 @@
 @main("Product form") {
 <h1>Product form</h1>
 @helper.form(action = routes.Products.save(), 'enctype -> "multipart/form-data") {
+
 <fieldset>
     <legend>Product (@productForm("name").valueOr("New"))</legend>
+    <input type="hidden" value="@productForm("id").valueOr("")" name="id"/>
     @helper.inputText(productForm("ean"), '_label -> "EAN", '_help -> "Must be exaclty 13 numbers.")
     @helper.inputText(productForm("name"),'_label -> "Name")
 
