@@ -4,19 +4,42 @@
 
 # Home page
 GET  /                     controllers.Products.index()
-GET  /products/            controllers.Products.list(page: Integer ?= 1)
+GET  /products/            controllers.Products.list(page: Integer ?= 0)
 POST /products/            controllers.Products.save()
 GET  /products/new         controllers.Products.newProduct()
 GET  /products/:ean        controllers.Products.details(ean: models.Product)
-DELETE /products/:ean controllers.Products.delete(ean: String)
+DELETE      /products/:ean               controllers.Products.delete(ean: String)
 GET  /picture/:ean         controllers.Products.picture(ean)
-GET /stockitems/ controllers.StockItems.index()
-GET /reports/ controllers.Reports.index()
 
-GET /live controllers.Application.index()
-GET /live-update controllers.Application.liveUpdate()
+GET     /live   controllers.Application.index()
+GET  /live-update        controllers.Application.liveUpdate()
+
+GET  /stockitems/          controllers.StockItems.index()
+GET  /reports/             controllers.Reports.index()
+
+GET  /login        controllers.Application.login()
+
+GET /signin  securesocial.controllers.LoginPage.login
+GET /logout securesocial.controllers.LoginPage.logout
+GET     /authenticate/:provider     securesocial.controllers.ProviderController.authenticate(provider)
+POST    /authenticate/:provider     securesocial.controllers.ProviderController.authenticateByPost(provider)
+GET     /not-authorized             securesocial.controllers.ProviderController.notAuthorized
 
 
+# User Registration and password handling (only needed if you are using UsernamePasswordProvider)
+GET     /signup                     securesocial.controllers.Registration.startSignUp
+POST    /signup                     securesocial.controllers.Registration.handleStartSignUp
+GET     /signup/:token              securesocial.controllers.Registration.signUp(token)
+POST    /signup/:token              securesocial.controllers.Registration.handleSignUp(token)
+GET     /reset                      securesocial.controllers.Registration.startResetPassword
+POST    /reset                      securesocial.controllers.Registration.handleStartResetPassword
+GET     /reset/:token               securesocial.controllers.Registration.resetPassword(token)
+POST    /reset/:token               securesocial.controllers.Registration.handleResetPassword(token)
+GET     /password                   securesocial.controllers.PasswordChange.page
+POST    /password                   securesocial.controllers.PasswordChange.handlePasswordChange
+
+
+POST /authenticate controllers.Application.authenticate()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

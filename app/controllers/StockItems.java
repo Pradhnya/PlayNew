@@ -8,13 +8,13 @@ import java.util.List;
 
 public class StockItems extends Controller {
 
-   public static Result index() {
-      List<StockItem> items = StockItem.find
-              .where()
-              .ge("quantity", 300)
-              .orderBy("quantity")
-              .setMaxRows(10)
-              .findList();
-      return ok(items.toString());
-   }
+    public static Result index() {
+        List<StockItem> items = StockItem.find
+                .where()
+                .ge("quantity", 300)
+                .orderBy("quantity")
+                .setMaxRows(10)
+                .findList();
+        return ok(items.toString());
+    }
 }
